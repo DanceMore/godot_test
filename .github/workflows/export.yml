@@ -1,36 +1,25 @@
-name: Export Godot 4 Game
+name: Export Godot Game
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   export:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Godot
-        uses: firebelley/setup-godot@v2
+      - name: Export game
+        id: export_game
+        uses: firebelley/godot-export@v7.0.0
         with:
-          version: "4.2.2"
-          include-templates: true
-          use-dotnet: false
-
-      - name: Export Windows
-        run: godot --headless --export-release "Windows Desktop" build/game.exe
-
-      - name: Export Linux
-        run: godot --headless --export-release "Linux/X11" build/game.x86_64
-
-      - name: Export macOS
-        run: godot --headless --export-release "macOS" build/game.app.zip
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Godot-Builds
-          path: build/
+          godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/4.2/Godot_v4.2-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.2/Godot_v4.2-stable_export_templates.tpz
+          relative_project_path: ./
+          archive_output: true
