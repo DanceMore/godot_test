@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1red4e75tosx"]
+
+[ext_resource type="Script" uid="uid://lf1bd5ibjr08" path="res://Oscillator.gd" id="1"]
+[ext_resource type="Script" uid="uid://cxgycwj6q6han" path="res://Waveform.gd" id="2"]
+[ext_resource type="Script" uid="uid://18xqiee5nwo3" path="res://Control.gd" id="3"]
+
+[node name="Main" type="Node"]
+
+[node name="Oscillator" type="Node" parent="."]
+script = ExtResource("1")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Oscillator"]
+
+[node name="Waveform" type="Node2D" parent="."]
+script = ExtResource("2")
+osc = NodePath("../Oscillator")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("3")
+oscillator = NodePath("../Oscillator")
+
+[node name="HSlider" type="HSlider" parent="Control"]
+layout_mode = 1
+offset_right = 1150.0
+offset_bottom = 106.0
+min_value = 50.0
+max_value = 2000.0
+value = 440.0
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+text = "440 Hz"
