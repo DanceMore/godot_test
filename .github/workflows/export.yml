@@ -2,7 +2,7 @@ name: Export Godot 4 Game
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -10,14 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Godot
-        uses: ChickensoftGames/setup-godot@v2
+        uses: firebelley/setup-godot@v2
         with:
           version: "4.2.2"
-          headless: true
-          export-templates: true
+          include-templates: true
+          use-dotnet: false
 
       - name: Export Windows
         run: godot --headless --export-release "Windows Desktop" build/game.exe
@@ -28,7 +29,7 @@ jobs:
       - name: Export macOS
         run: godot --headless --export-release "macOS" build/game.app.zip
 
-      - name: Upload
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Godot-Builds
