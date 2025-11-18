@@ -1,0 +1,35 @@
+name: Export Godot 4 Game
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Godot
+        uses: ChickensoftGames/setup-godot@v2
+        with:
+          version: "4.2.2"
+          headless: true
+          export-templates: true
+
+      - name: Export Windows
+        run: godot --headless --export-release "Windows Desktop" build/game.exe
+
+      - name: Export Linux
+        run: godot --headless --export-release "Linux/X11" build/game.x86_64
+
+      - name: Export macOS
+        run: godot --headless --export-release "macOS" build/game.app.zip
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: Godot-Builds
+          path: build/
